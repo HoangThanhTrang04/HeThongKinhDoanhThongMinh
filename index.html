@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SmartRent - Tìm mặt bằng cho thuê</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <div class="logo">SmartRent</div>
+        <div class="search-bar">
+            <input type="text" id="location" placeholder="Nhập vị trí bạn muốn tìm...">
+            <button id="filterBtn">Tìm kiếm</button>
+            <button id="loginBtn">Đăng nhập/Đăng ký</button>
+        </div>
+    </header>
+
+    <!-- Main content -->
+    <main>
+        <!-- Bộ lọc bên trái -->
+        <aside class="filters">
+            <h3>Bộ lọc nâng cao</h3>
+            <input type="number" id="minPrice" placeholder="Giá từ (triệu)">
+            <input type="number" id="maxPrice" placeholder="Đến (triệu)">
+            <input type="number" id="minArea" placeholder="Diện tích từ (m²)">
+            <input type="number" id="maxArea" placeholder="Đến (m²)">
+            <select id="businessType">
+                <option value="">Loại hình kinh doanh</option>
+                <option value="Cafe">Cafe</option>
+                <option value="Shop">Shop</option>
+                <option value="Office">Văn phòng</option>
+            </select>
+        </aside>
+
+        <!-- Danh sách mặt bằng -->
+        <section class="results" id="listing">
+            <!-- JS sẽ load danh sách vào đây -->
+        </section>
+    </main>
+
+    <!-- Modal đăng nhập/đăng ký -->
+    <div id="loginModal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h2>Đăng nhập</h2>
+            <input type="text" placeholder="Tên đăng nhập">
+            <input type="password" placeholder="Mật khẩu">
+            <button>Đăng nhập</button>
+            <hr>
+            <h2>Đăng ký</h2>
+            <input type="text" placeholder="Tên đăng nhập">
+            <input type="password" placeholder="Mật khẩu">
+            <button>Đăng ký</button>
+        </div>
+    </div>
+    <script src="script.js"></script> <!-- file cũ bạn đang dùng -->
+    <script src="cluster.js"></script> <!-- file clustering mới -->
+    <script>
+        // Áp dụng clustering và hiển thị
+        let clusteredListings = kMeans(listings, 3); // 3 nhóm
+        displayListings(clusteredListings);
+    
+        // Lọc theo input
+        document.getElementById('filterBtn').addEventListener('click', () => {
+            const location = document.getElementById('location').value.toLowerCase();
+            const minPrice = Number(document.getElementById('minPrice').value);
+            const maxPrice = Number(document.getElementById('maxPrice').value);
+            const minArea = Number(document.getElementById('minArea').value);
+            const maxArea = Number(document.getElementById('maxArea').value);
+            const businessType = document.getElementById('businessType').value;
+    
+            const filtered = clusteredListings.filter(item => {
+                return (!location || item.location.toLowerCase().includes(location)) &&
+                       (!minPrice || item.price >= minPrice) &&
+                       (!maxPrice || item.price <= maxPrice) &&
+                       (!minArea || item.area >= minArea) &&
+                       (!maxArea || item.area <= maxArea) &&
+                       (!businessType || item.businessType === businessType);
+            });
+    
+            displayListings(filtered);
+        });
+    </script>
+    
+    <script src="script.js"></script>
+</body>
+</html>
