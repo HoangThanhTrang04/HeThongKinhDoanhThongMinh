@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chi tiết mặt bằng</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+    <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+    <style>
+        .detail-container {
+            display: flex;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+        .detail-left img {
+            width: 300px;
+            height: auto;
+            border-radius: 5px;
+        }
+        .contact-box {
+            border: 1px solid #000;
+            padding: 5px 10px;
+            display: inline-block;
+            background-color: #f0f0f0;
+            font-weight: bold;
+        }
+        #map {
+            width: 100%;
+            height: 400px;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="logo">SmartRent</div>
+        <button onclick="history.back()">← Quay lại</button>
+    </header>
+
+    <section id="detail" class="detail-container"></section>
+
+    <script>
+    window.addEventListener('DOMContentLoaded', async () => {
+        const item = JSON.parse(localStorage.getItem('selectedItem'));
+        const container = document.getElementById('detail');
+
+        if(!item) {
+            container.innerHTML = "<p>Không có dữ liệu để hiển thị.</p>";
+            return;
+        }
+
+        container.innerHTML = `
+            <div class="detail-left">
+                <img src="${item.image}" alt="${item.name}">
+            </div>
+            <div class="detail-right">
+                <h2>${item.name}</h2>
+                <p><strong>Vị trí:</strong> ${item.location}</p>
+                <p><strong>Giá:</strong> ${item.price} triệu/tháng</p>
+                <p><strong>Diện tích:</strong> ${item.area} m²</p>
+                <p><strong>Loại hình:</strong> ${item.businessType}</p>
+                <p><strong>Đánh giá:</strong> ${item.rating} ⭐</p>
+                <p class="contact-box">Liên hệ: 0987 123 456</p>
+                <div id="map"></div>
+            </div>
+        `;
+
+        async function showMap(address){
+            const url = `https://nominatim.openstreetmap.org/search?q=${encodeURIComponent(address)}&format=json&limit=1`;
+            try {
+                const res = await fetch(url, {headers: {"Accept-Language":"vi"}});
+                const data = await res.json();
+                if(data.length === 0) return;
+
+                const coords = [parseFloat(data[0].lat), parseFloat(data[0].lon)];
+                const map = L.map('map').setView(coords, 15);
+                L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                    attribution: '&copy; OpenStreetMap contributors'
+                }).addTo(map);
+                L.marker(coords).addTo(map)
+                 .bindPopup(`<b>${item.name}</b><br>${item.location}`).openPopup();
+            } catch(err){
+                console.error("Không thể load map:", err);
+            }
+        }
+
+        showMap(item.location);
+    });
+    </script>
+<script>
+    (function(d, w, c) {
+        w.ChatraID = 'R2xoaZLThnAGvLATi';
+        var s = d.createElement('script');
+        w[c] = w[c] || function() {
+            (w[c].q = w[c].q || []).push(arguments);
+        };
+        s.async = true;
+        s.src = 'https://call.chatra.io/chatra.js';
+        if (d.head) d.head.appendChild(s);
+    })(document, window, 'Chatra');
+</script>
+<!-- /Chatra {/lit
+</body>
+</html>
