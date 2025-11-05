@@ -1,4 +1,4 @@
-<<<<<<< HEAD
+
 window.addEventListener('DOMContentLoaded', async () => {
     const item = JSON.parse(localStorage.getItem('selectedItem'));
     const container = document.getElementById('detail');
@@ -43,7 +43,6 @@ window.addEventListener('DOMContentLoaded', async () => {
 
     showMap(item.location);
 });
-=======
 window.addEventListener('DOMContentLoaded', async () => {
     const item = JSON.parse(localStorage.getItem('selectedItem'));
     const container = document.getElementById('detail');
@@ -88,4 +87,4 @@ window.addEventListener('DOMContentLoaded', async () => {
 
     showMap(item.location);
 });
->>>>>>> 6ec2cf6 (thong tin chi tiet cua mat bang)
+

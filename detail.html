@@ -1,48 +1,20 @@
-<<<<<<< HEAD
 <!DOCTYPE html>
 <html lang="vi">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Chi tiết mặt bằng</title>
-    <link rel="stylesheet" href="style.css">
-    <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
-    <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
-    <style>
-        .detail-container {
-            display: flex;
-            gap: 20px;
-            flex-wrap: wrap;
-        }
-        .detail-left img {
-            width: 300px;
-            height: auto;
-            border-radius: 5px;
-        }
-        .contact-box {
-            border: 1px solid #000;
-            padding: 5px 10px;
-            display: inline-block;
-            background-color: #f0f0f0;
-            font-weight: bold;
-        }
-        #map {
-            width: 100%;
-            height: 400px;
-            margin-top: 20px;
-        }
-    </style>
-</head>
-<body>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Chi tiết mặt bằng</title>
 
-    <header>
-        <div class="logo">SmartRent</div>
-        <button onclick="history.back()">← Quay lại</button>
-    </header>
+<link rel="stylesheet" href="detail.css">
+<link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+<script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
 
-    <section id="detail" class="detail-container"></section>
-
-    <script>
+<script type="module" src="./firebase.js"></script>
+<script type="module">
+    import { db } from "./firebase.js";
+    import { ref, push, onValue } from "https://www.gstatic.com/firebasejs/10.12.3/firebase-database.js";
+    
+    // Logic của trang chi tiết
     window.addEventListener('DOMContentLoaded', async () => {
         const item = JSON.parse(localStorage.getItem('selectedItem'));
         const container = document.getElementById('detail');
@@ -52,22 +24,108 @@
             return;
         }
 
+        // Tạo cấu trúc HTML mới
         container.innerHTML = `
-            <div class="detail-left">
-                <img src="${item.image}" alt="${item.name}">
-            </div>
-            <div class="detail-right">
-                <h2>${item.name}</h2>
-                <p><strong>Vị trí:</strong> ${item.location}</p>
-                <p><strong>Giá:</strong> ${item.price} triệu/tháng</p>
-                <p><strong>Diện tích:</strong> ${item.area} m²</p>
-                <p><strong>Loại hình:</strong> ${item.businessType}</p>
-                <p><strong>Đánh giá:</strong> ${item.rating} ⭐</p>
-                <p class="contact-box">Liên hệ: 0987 123 456</p>
-                <div id="map"></div>
+            <div class="main-content">
+                <div class="column-left">
+                    <img src="${item.image}" alt="${item.name}" class="item-image">
+                    
+                    <h3 class="reviews-header">Đánh giá khách hàng</h3>
+                    <div id="reviewsList" class="reviews-list">
+                        </div>
+                    
+                    <h4 class="form-header">Gửi đánh giá của bạn</h4>
+                    <div class="review-form-box">
+                        <input type="text" id="reviewerName" class="form-input" placeholder="Tên bạn">
+                        <select id="rating" class="form-select">
+                            <option value="5">⭐️⭐️⭐️⭐️⭐️</option>
+                            <option value="4">⭐️⭐️⭐️⭐️</option>
+                            <option value="3">⭐️⭐️⭐️</option>
+                            <option value="2">⭐️⭐️</option>
+                            <option value="1">⭐️</option>
+                        </select>
+                        <textarea id="reviewText" class="form-textarea" placeholder="Viết đánh giá..." rows="3"></textarea>
+                        <button id="submitReview" class="submit-button">Gửi đánh giá</button>
+                    </div>
+                </div>
+
+                <div class="column-right">
+                    <h2 class="item-title">${item.name}</h2>
+                    <p><strong>Vị trí:</strong> ${item.location}</p>
+                    <p><strong>Giá:</strong> ${item.price} triệu/tháng</p>
+                    <p><strong>Diện tích:</strong> ${item.area} m²</p>
+                    <p><strong>Loại hình:</strong> ${item.businessType}</p>
+                    <p class="avg-rating"><strong>Đánh giá:</strong> ${item.rating} ⭐</p>
+                    <p class="contact-box">Liên hệ: 0987 123 456</p>
+                    
+                    <div id="map" class="map-container"></div>
+                </div>
             </div>
         `;
 
+        // ----------------------------------------------------
+        // Logic Đánh Giá (Lấy từ review.js)
+        // ----------------------------------------------------
+        const reviewsList = document.getElementById('reviewsList');
+        const reviewerNameInput = document.getElementById('reviewerName');
+        const reviewTextInput = document.getElementById('reviewText');
+        const ratingSelect = document.getElementById('rating');
+        const submitBtn = document.getElementById('submitReview');
+        
+        const reviewsRef = ref(db, `reviews/${item.id}`);
+
+        // Lấy và hiển thị đánh giá từ Firebase
+        onValue(reviewsRef, (snapshot) => {
+            const data = snapshot.val();
+            reviewsList.innerHTML = '';
+            if (!data) {
+                reviewsList.innerHTML = '<p class="no-reviews">Chưa có đánh giá nào.</p>';
+                return;
+            }
+            const reviews = Object.values(data);
+            reviews.forEach(r => {
+                const div = document.createElement('div');
+                div.className = 'review-item'; // Sử dụng class mới
+                div.innerHTML = `
+                    <div class="review-meta">
+                        <strong>${r.name}</strong> - <span class="review-rating">${r.rating} ⭐</span>
+                    </div>
+                    <p class="review-text">${r.text}</p>
+                `;
+                reviewsList.appendChild(div);
+            });
+        });
+
+        // Gửi đánh giá mới
+        submitBtn.addEventListener('click', () => {
+            const name = reviewerNameInput.value.trim();
+            const text = reviewTextInput.value.trim();
+            const rating = ratingSelect.value;
+
+            if(!name || !text) {
+                alert("Vui lòng điền đầy đủ thông tin đánh giá!");
+                return;
+            }
+
+            push(reviewsRef, {
+                name,
+                text,
+                rating,
+                timestamp: Date.now()
+            }).then(() => {
+                reviewerNameInput.value = '';
+                reviewTextInput.value = '';
+                alert("Gửi đánh giá thành công!");
+            }).catch(err => {
+                console.error(err);
+                alert("Gửi đánh giá thất bại! Vui lòng kiểm tra Firebase Rules.");
+            });
+        });
+
+
+        // ----------------------------------------------------
+        // Logic Bản Đồ (Đã có sẵn)
+        // ----------------------------------------------------
         async function showMap(address){
             const url = `https://nominatim.openstreetmap.org/search?q=${encodeURIComponent(address)}&format=json&limit=1`;
             try {
@@ -81,7 +139,7 @@
                     attribution: '&copy; OpenStreetMap contributors'
                 }).addTo(map);
                 L.marker(coords).addTo(map)
-                 .bindPopup(`<b>${item.name}</b><br>${item.location}`).openPopup();
+                .bindPopup(`<b>${item.name}</b><br>${item.location}`).openPopup();
             } catch(err){
                 console.error("Không thể load map:", err);
             }
@@ -89,114 +147,21 @@
 
         showMap(item.location);
     });
-    </script>
-<script>
-    (function(d, w, c) {
-        w.ChatraID = 'R2xoaZLThnAGvLATi';
-        var s = d.createElement('script');
-        w[c] = w[c] || function() {
-            (w[c].q = w[c].q || []).push(arguments);
-        };
-        s.async = true;
-        s.src = 'https://call.chatra.io/chatra.js';
-        if (d.head) d.head.appendChild(s);
-    })(document, window, 'Chatra');
 </script>
-<!-- /Chatra {/lit
-</body>
-</html>
-=======
-<!DOCTYPE html>
-<html lang="vi">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Chi tiết mặt bằng</title>
-    <link rel="stylesheet" href="style.css">
-    <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
-    <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
-    <style>
-        .detail-container {
-            display: flex;
-            gap: 20px;
-            flex-wrap: wrap;
-        }
-        .detail-left img {
-            width: 300px;
-            height: auto;
-            border-radius: 5px;
-        }
-        .contact-box {
-            border: 1px solid #000;
-            padding: 5px 10px;
-            display: inline-block;
-            background-color: #f0f0f0;
-            font-weight: bold;
-        }
-        #map {
-            width: 100%;
-            height: 400px;
-            margin-top: 20px;
-        }
-    </style>
 </head>
 <body>
 
-    <header>
-        <div class="logo">SmartRent</div>
-        <button onclick="history.back()">← Quay lại</button>
-    </header>
+<header class="app-header">
+    <div style="display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background-color: #007bff;
+    color: white;
+    padding: 15px 30px;">SmartRent</div>
+</header>
 
-    <section id="detail" class="detail-container"></section>
-
-    <script>
-    window.addEventListener('DOMContentLoaded', async () => {
-        const item = JSON.parse(localStorage.getItem('selectedItem'));
-        const container = document.getElementById('detail');
-
-        if(!item) {
-            container.innerHTML = "<p>Không có dữ liệu để hiển thị.</p>";
-            return;
-        }
-
-        container.innerHTML = `
-            <div class="detail-left">
-                <img src="${item.image}" alt="${item.name}">
-            </div>
-            <div class="detail-right">
-                <h2>${item.name}</h2>
-                <p><strong>Vị trí:</strong> ${item.location}</p>
-                <p><strong>Giá:</strong> ${item.price} triệu/tháng</p>
-                <p><strong>Diện tích:</strong> ${item.area} m²</p>
-                <p><strong>Loại hình:</strong> ${item.businessType}</p>
-                <p><strong>Đánh giá:</strong> ${item.rating} ⭐</p>
-                <p class="contact-box">Liên hệ: 0987 123 456</p>
-                <div id="map"></div>
-            </div>
-        `;
-
-        async function showMap(address){
-            const url = `https://nominatim.openstreetmap.org/search?q=${encodeURIComponent(address)}&format=json&limit=1`;
-            try {
-                const res = await fetch(url, {headers: {"Accept-Language":"vi"}});
-                const data = await res.json();
-                if(data.length === 0) return;
-
-                const coords = [parseFloat(data[0].lat), parseFloat(data[0].lon)];
-                const map = L.map('map').setView(coords, 15);
-                L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-                    attribution: '&copy; OpenStreetMap contributors'
-                }).addTo(map);
-                L.marker(coords).addTo(map)
-                 .bindPopup(`<b>${item.name}</b><br>${item.location}`).openPopup();
-            } catch(err){
-                console.error("Không thể load map:", err);
-            }
-        }
-
-        showMap(item.location);
-    });
-    </script>
+<section id="detail" class="detail-container"></section>
+<!-- Chatra {literal} -->
 <script>
     (function(d, w, c) {
         w.ChatraID = 'R2xoaZLThnAGvLATi';
@@ -209,7 +174,6 @@
         if (d.head) d.head.appendChild(s);
     })(document, window, 'Chatra');
 </script>
-<!-- /Chatra {/lit
+<!-- /Chatra {/literal} -->
 </body>
 </html>
->>>>>>> 6ec2cf6 (thong tin chi tiet cua mat bang)

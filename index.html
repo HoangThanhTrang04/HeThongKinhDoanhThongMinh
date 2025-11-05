@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SmartRent - Tìm mặt bằng cho thuê</title>
+    <link rel="stylesheet" href="style.css">
+    </head>
+<body>
+    <header>
+        <div class="logo">SmartRent</div>
+        <div class="search-bar">
+            <input type="text" id="location" placeholder="Nhập vị trí bạn muốn tìm...">
+            <button id="filterBtn">Tìm kiếm</button>
+            <button id="loginBtn">Đăng nhập/Đăng ký</button>
+        </div>
+    </header>
+
+    <main>
+        <aside class="filters">
+            <h3>Bộ lọc nâng cao</h3>
+            <input type="number" id="minPrice" placeholder="Giá từ (triệu)">
+            <input type="number" id="maxPrice" placeholder="Đến (triệu)">
+            <input type="number" id="minArea" placeholder="Diện tích từ (m²)">
+            <input type="number" id="maxArea" placeholder="Đến (m²)">
+            <select id="businessType">
+                <option value="">Loại hình kinh doanh</option>
+                <option value="Cafe">Cafe</option>
+                <option value="Shop">Shop</option>
+                <option value="Office">Văn phòng</option>
+            </select>
+            <button id="applyFiltersBtn" style="width: 100%; padding: 10px; background-color: #007bff; color: white; border: none; border-radius: 5px; margin-top: 10px;">Áp dụng bộ lọc</button>
+        </aside>
+
+        <section class="results" id="listing">
+            </section>
+    </main>
+<script type="module" src="script.js"></script>
+    </body>
+</html>

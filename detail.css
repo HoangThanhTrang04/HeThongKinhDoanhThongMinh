@@ -1,0 +1,126 @@
+/* --- Cấu Trúc Chi Tiết --- */
+.detail-container {
+    max-width: 1200px;
+    margin: 30px auto;
+    padding: 20px;
+}
+
+.main-content {
+    display: flex;
+    gap: 30px; /* Khoảng cách giữa hai cột */
+}
+
+.column-left {
+    flex: 1; /* Chiếm 1 phần (ví dụ 40%) */
+    min-width: 350px;
+}
+
+.column-right {
+    flex: 2; /* Chiếm 2 phần (ví dụ 60%) */
+}
+
+.item-image {
+    width: 100%;
+    max-height: 300px;
+    object-fit: cover;
+    border-radius: 8px;
+    margin-bottom: 20px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.map-container {
+    width: 100%;
+    height: 400px;
+    margin-top: 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.contact-box {
+    border: 1px solid #007bff;
+    padding: 10px 15px;
+    background: #e6f0ff;
+    font-weight: bold;
+    display: inline-block;
+    border-radius: 5px;
+    color: #007bff;
+    margin-bottom: 20px;
+}
+
+/* --- Phần Đánh Giá (Mới) --- */
+.reviews-header, .form-header {
+    color: #343a40;
+    border-bottom: 2px solid #ccc;
+    padding-bottom: 5px;
+    margin-top: 25px;
+    margin-bottom: 15px;
+}
+
+.reviews-list {
+    max-height: 300px; /* Giới hạn chiều cao */
+    overflow-y: auto; /* Thêm thanh cuộn nếu quá dài */
+    padding-right: 10px;
+}
+
+.review-item {
+    border: 1px solid #e9ecef;
+    padding: 10px;
+    border-radius: 5px;
+    background-color: #ffffff;
+    margin-bottom: 10px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+}
+
+.review-meta {
+    font-weight: bold;
+    margin-bottom: 5px;
+}
+
+.review-rating {
+    color: #ffc107; /* Màu vàng cho sao */
+}
+
+/* Form Đánh Giá Nhỏ */
+.review-form-box {
+    background: #f8f9fa;
+    padding: 15px;
+    border-radius: 8px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.form-input, .form-select, .form-textarea {
+    padding: 8px;
+    border: 1px solid #ced4da;
+    border-radius: 4px;
+    font-size: 0.9em;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.submit-button {
+    padding: 10px;
+    background-color: #28a745;
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 1em;
+    transition: background-color 0.2s;
+}
+
+.submit-button:hover {
+    background-color: #1e7e34;
+}
+
+/* Điều chỉnh responsive (nếu cần) */
+@media (max-width: 768px) {
+    .main-content {
+        flex-direction: column;
+    }
+    .column-left, .column-right {
+        min-width: auto;
+        flex: none;
+    }
+}
