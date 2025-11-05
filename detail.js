@@ -66,7 +66,7 @@ window.addEventListener('DOMContentLoaded', async () => {
         </div>
     `;
 
-    // Hàm hiển thị map
+    // hàm map
     async function showMap(address) {
         const url = `https://nominatim.openstreetmap.org/search?q=${encodeURIComponent(address)}&format=json&limit=1`;
         try {
