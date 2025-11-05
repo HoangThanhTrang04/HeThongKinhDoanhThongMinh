@@ -1,3 +1,290 @@
+/* Reset cơ bản */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f5f5f5;
+}
+
+/* Header */
+header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background-color: #007bff;
+    color: white;
+    padding: 15px 30px;
+}
+
+header .logo {
+    font-size: 24px;
+    font-weight: bold;
+}
+
+header .search-bar {
+    display: flex;
+    gap: 10px;
+}
+
+header .search-bar input {
+    padding: 10px;
+    font-size: 16px;
+    width: 300px;
+    border-radius: 5px;
+    border: none;
+}
+
+header .search-bar button {
+    padding: 10px 20px;
+    font-size: 16px;
+    background-color: #ffc107;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+/* Main layout */
+main {
+    display: flex;
+    padding: 20px 30px;
+    gap: 20px;
+}
+
+/* Bộ lọc */
+aside.filters {
+    width: 250px;
+    background-color: white;
+    padding: 20px;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    height: fit-content;
+}
+
+aside.filters h3 {
+    margin-bottom: 15px;
+}
+
+aside.filters input, aside.filters select {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 10px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+}
+
+/* Danh sách mặt bằng */
+.results {
+    flex: 1;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 20px;
+}
+
+/* Card mặt bằng */
+.listing-item {
+    background-color: white;
+    border-radius: 5px;
+    overflow: hidden;
+    box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    transition: transform 0.2s;
+}
+
+.listing-item:hover {
+    transform: translateY(-5px);
+}
+
+.listing-item img {
+    width: 100%;
+    height: 180px;
+    object-fit: cover;
+}
+
+.listing-content {
+    padding: 15px;
+}
+
+.listing-content h3 {
+    font-size: 18px;
+    margin-bottom: 10px;
+    color: #007bff;
+}
+
+.listing-content p {
+    font-size: 14px;
+    margin-bottom: 5px;
+}
+
+.listing-content .rating {
+    color: #ffc107;
+}
+/* Reset cơ bản */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f5f5f5;
+}
+
+/* Header */
+header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background-color: #007bff;
+    color: white;
+    padding: 15px 30px;
+}
+
+header .logo {
+    font-size: 24px;
+    font-weight: bold;
+}
+
+header .search-bar {
+    display: flex;
+    gap: 10px;
+}
+
+header .search-bar input {
+    padding: 10px;
+    font-size: 16px;
+    width: 300px;
+    border-radius: 5px;
+    border: none;
+}
+
+header .search-bar button {
+    padding: 10px 20px;
+    font-size: 16px;
+    background-color: #ffc107;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+/* Main layout */
+main {
+    display: flex;
+    padding: 20px 30px;
+    gap: 20px;
+}
+
+/* Bộ lọc */
+aside.filters {
+    width: 250px;
+    background-color: white;
+    padding: 20px;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    height: fit-content;
+}
+
+aside.filters h3 {
+    margin-bottom: 15px;
+}
+
+aside.filters input, aside.filters select {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 10px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+}
+
+/* Danh sách mặt bằng */
+.results {
+    flex: 1;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 20px;
+}
+
+/* Card mặt bằng */
+.listing-item {
+    background-color: white;
+    border-radius: 5px;
+    overflow: hidden;
+    box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    transition: transform 0.2s;
+}
+
+.listing-item:hover {
+    transform: translateY(-5px);
+}
+
+.listing-item img {
+    width: 100%;
+    height: 180px;
+    object-fit: cover;
+}
+
+.listing-content {
+    padding: 15px;
+}
+
+.listing-content h3 {
+    font-size: 18px;
+    margin-bottom: 10px;
+    color: #007bff;
+}
+
+.listing-content p {
+    font-size: 14px;
+    margin-bottom: 5px;
+}
+
+.listing-content .rating {
+    color: #ffc107;
+}
+/* Modal */
+.modal {
+    display: none; /* ẩn mặc định */
+    position: fixed; 
+    z-index: 1000; 
+    left: 0;
+    top: 0;
+    width: 100%; 
+    height: 100%; 
+    overflow: auto; 
+    background-color: rgba(0,0,0,0.5);
+}
+
+.modal-content {
+    background-color: #fefefe;
+    margin: 10% auto; 
+    padding: 20px;
+    border: 1px solid #888;
+    width: 350px; 
+    border-radius: 5px;
+    text-align: center;
+}
+
+.modal-content input {
+    width: 90%;
+    padding: 10px;
+    margin: 5px 0;
+}
+
+.modal-content button {
+    padding: 10px 20px;
+    margin: 10px 0;
+    cursor: pointer;
+}
+
+.close {
+    color: #aaa;
+    float: right;
+    font-size: 24px;
+    cursor: pointer;
+}
 /* Detail page */
 .detail-container {
     display: flex;
@@ -42,4 +329,107 @@
     font-weight: bold;
     border-radius: 5px;
     background-color: #f0f0f0;
+}
+/* Wrapper chatbot */
+#chatbot-wrapper {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    z-index: 9999;
+}
+
+/* Nút tròn chatbot */
+#chatbot-icon {
+    width: 60px;
+    height: 60px;
+    background-color: #007bff;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 30px;
+    color: white;
+    cursor: pointer;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+}
+
+/* Cửa sổ chat ẩn mặc định */
+#chatbot-window {
+    display: none;
+    flex-direction: column;
+    width: 350px;
+    height: 450px;
+    background-color: #fff;
+    border-radius: 10px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+    overflow: hidden;
+}
+
+/* Hiện cửa sổ chat */
+#chatbot-window.visible {
+    display: flex;
+    flex-direction: column;
+}
+
+/* Header */
+#chat-header {
+    background-color: #007bff;
+    color: white;
+    padding: 10px;
+    font-weight: bold;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+/* Tin nhắn */
+#chat-messages {
+    flex-grow: 1;
+    padding: 10px;
+    overflow-y: auto;
+    background-color: #f9f9f9;
+}
+
+/* Tin nhắn người dùng và bot */
+.message {
+    padding: 8px 12px;
+    border-radius: 15px;
+    margin-bottom: 10px;
+    max-width: 80%;
+    word-wrap: break-word;
+}
+
+.user-message {
+    background-color: #dcf8c6;
+    margin-left: auto;
+}
+
+.bot-message {
+    background-color: #ffffff;
+    border: 1px solid #eee;
+    margin-right: auto;
+}
+
+/* Input area */
+#chat-input-area {
+    display: flex;
+    padding: 10px;
+    border-top: 1px solid #ccc;
+}
+
+#chat-input {
+    flex-grow: 1;
+    padding: 8px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    margin-right: 5px;
+}
+
+#send-btn {
+    padding: 8px 15px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
 }
