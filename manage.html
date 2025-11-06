@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quản lý Bài đăng - SmartRent</title>
+    <link rel="stylesheet" href="style.css">
+    </head>
+<body>
+    <header>
+        <div class="logo">SmartRent</div>
+        <div class="search-bar">
+            <a href="index.html" class="back-home-btn" style="padding: 10px; background-color: #ffc107; color: #333; text-decoration: none; border-radius: 5px;">Quay lại Trang chủ</a>
+            <div class="user-menu-wrapper">
+                <button id="loginBtn" style="display:none;">Đăng nhập/Đăng ký</button>
+                <div id="userDropdownMenu" class="dropdown-content">
+                    <a href="index.html">Về trang chủ</a>
+                    <a href="#" id="logoutBtn">Đăng xuất</a> 
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <main style="display: block;">
+        <section class="manage-area" style="padding: 20px 50px; max-width: 1000px; margin: 0 auto;">
+            <h1>Quản lý Bài đăng Của Bạn 💼</h1>
+            <p id="manageStatus" style="color: red;"></p>
+            <div id="manageListingsContainer" class="managed-listings">
+                <p>Đang tải bài đăng...</p>
+            </div>
+        </section>
+    </main>
+
+    <div id="postModal" class="modal">
+        <div class="modal-content">
+            <span class="close-post-modal" id="closePostModalBtn">&times;</span>
+            <h2 id="postModalTitle">Sửa Tin Cho Thuê Mặt Bằng ✏️</h2>
+            <form id="new-listing-form">
+                <input type="hidden" id="post-id"> 
+                <label for="post-title">Tiêu đề tin đăng:</label>
+                <input type="text" id="post-title" required placeholder="Ví dụ: Mặt tiền kinh doanh Quận 1, 50m2">
+
+                <label for="post-price">Giá thuê (triệu VNĐ/tháng):</label>
+                <input type="number" id="post-price" required placeholder="Ví dụ: 20" min="1">
+
+                <label for="post-area">Diện tích (m²):</label>
+                <input type="number" id="post-area" required placeholder="Ví dụ: 50" min="10">
+                
+                <label for="post-location">Địa chỉ/Khu vực:</label>
+                <input type="text" id="post-location" required placeholder="Ví dụ: Đường A, Phường B, Quận C">
+
+                <label for="post-businessType">Loại hình phù hợp:</label>
+                <select id="post-businessType">
+                    <option value="Cafe">Cafe</option>
+                    <option value="Shop">Shop/Cửa hàng</option>
+                    <option value="Office">Văn phòng</option>
+                    <option value="Restaurant">Nhà hàng</option>
+                    <option value="Other">Khác</option>
+                </select>
+                <label for="post-image-url">Hình ảnh Mặt bằng (URL):</label>
+                <input type="text" 
+                    id="post-image-url" 
+                    name="image-url" 
+                    placeholder="Dán link ảnh tại đây (VD: https://linkanh.com/matbang.jpg)"
+                    required>
+
+                <label for="post-description">Mô tả chi tiết:</label>
+                <textarea id="post-description" rows="4" required placeholder="Mô tả ưu điểm, tiện ích, hợp đồng..."></textarea>
+                
+                <button type="submit" class="btn-submit-post" id="submitPostBtn">Cập nhật Tin đăng</button>
+            </form>
+        </div>
+    </div>
+    
+    <script type="module" src="manage.js"></script> 
+</body>
+</html>

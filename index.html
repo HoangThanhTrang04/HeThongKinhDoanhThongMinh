@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SmartRent - Tìm mặt bằng cho thuê</title>
+    <link rel="stylesheet" href="style.css">
+    </head>
+<body>
+    <header>
+        <div class="logo">SmartRent</div>
+        <div class="search-bar">
+            <input type="text" id="location" placeholder="Nhập vị trí bạn muốn tìm...">
+            <button id="filterBtn">Tìm kiếm</button>
+            <div class="user-menu-wrapper">
+                <button id="loginBtn">Đăng nhập/Đăng ký</button>
+                
+                <div id="userDropdownMenu" class="dropdown-content">
+                    <a href="#" id="dropdownPostBtn">Đăng bài</a> 
+                    <a href="manage.html" id="manageListingsBtn">Quản lý bài đăng</a> 
+                    <a href="#" id="logoutBtn" style="display: none;">Đăng xuất</a> 
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <main>
+        <aside class="filters">
+            <h3>Bộ lọc nâng cao</h3>
+            <input type="number" id="minPrice" placeholder="Giá từ (triệu)">
+            <input type="number" id="maxPrice" placeholder="Đến (triệu)">
+            <input type="number" id="minArea" placeholder="Diện tích từ (m²)">
+            <input type="number" id="maxArea" placeholder="Đến (m²)">
+            <select id="businessType">
+                <option value="">Loại hình kinh doanh</option>
+                <option value="Cafe">Cafe</option>
+                <option value="Shop">Shop</option>
+                <option value="Office">Văn phòng</option>
+            </select>
+            <button id="applyFiltersBtn" style="width: 100%; padding: 10px; background-color: #007bff; color: white; border: none; border-radius: 5px; margin-top: 10px;">Áp dụng bộ lọc</button>
+        </aside>
+
+        <section class="results" id="listing">
+            </section>
+    </main>
+
+    <div id="loginModal" class="modal">
+        <div class="modal-content">
+            <span class="close" id="closeModal">&times;</span>
+            <div id="loginView">
+                <h2>Đăng nhập</h2>
+                <input type="text" id="loginUsername" placeholder="Tên đăng nhập">
+                <input type="password" id="loginPassword" placeholder="Mật khẩu">
+                <p id="loginMessage" style="color: red;"></p>
+                <button id="signInBtn">Đăng nhập</button>
+                <hr>
+                <p>Chưa có tài khoản? <a href="#" id="switchToRegister">Đăng ký ngay</a></p>
+            </div>
+            <div id="registerView" style="display:none;">
+                <h2>Đăng ký</h2>
+                <input type="text" id="registerUsername" placeholder="Tên đăng nhập">
+                <input type="password" id="registerPassword" placeholder="Mật khẩu">
+                <p id="registerMessage" style="color: red;"></p>
+                <button id="signUpBtn">Đăng ký</button>
+                <hr>
+                <p>Đã có tài khoản? <a href="#" id="switchToLogin">Đăng nhập</a></p>
+            </div>
+        </div>
+    </div>
+    
+  <!-- CHAT BOT AI -->
+  <div id="chatbot-wrapper">
+    <div id="chatbot-icon" onclick="toggleChatbot(true)">
+        💬
+    </div>
+
+    <div id="chatbot-window">
+        <div id="chat-header">
+            Trợ lý SmartRent
+            <span id="close-btn" onclick="toggleChatbot(false)">✖</span>
+        </div>
+        <div id="chat-messages">
+            <div class="message bot-message">Chào bạn, tôi có thể tư vấn mặt bằng cho thuê như thế nào?</div>
+        </div>
+        <div id="chat-input-area">
+            <input type="text" id="chat-input" placeholder="Hỏi về giá, khu vực, loại hình...">
+            <button id="send-btn">Gửi</button>
+        </div>
+    </div>
+</div>
+<!-- Đăng bài -->
+<div id="postModal" class="modal">
+    <div class="modal-content">
+        <span class="close-post-modal" id="closePostModalBtn">&times;</span>
+        <h2>Đăng Tin Cho Thuê Mặt Bằng 📝</h2>
+        <form id="new-listing-form">
+            <label for="post-title">Tiêu đề tin đăng:</label>
+            <input type="text" id="post-title" required placeholder="Ví dụ: Mặt tiền kinh doanh Quận 1, 50m2">
+
+            <label for="post-price">Giá thuê (triệu VNĐ/tháng):</label>
+            <input type="number" id="post-price" required placeholder="Ví dụ: 20" min="1">
+
+            <label for="post-area">Diện tích (m²):</label>
+            <input type="number" id="post-area" required placeholder="Ví dụ: 50" min="10">
+            
+            <label for="post-location">Địa chỉ/Khu vực:</label>
+            <input type="text" id="post-location" required placeholder="Ví dụ: Đường A, Phường B, Quận C">
+
+            <label for="post-businessType">Loại hình phù hợp:</label>
+            <select id="post-businessType">
+                <option value="Cafe">Cafe</option>
+                <option value="Shop">Shop/Cửa hàng</option>
+                <option value="Office">Văn phòng</option>
+                <option value="Restaurant">Nhà hàng</option>
+                <option value="Other">Khác</option>
+            </select>
+            <label for="post-images">Hình ảnh Mặt bằng:</label>
+            <input type="text" 
+                id="post-image-url" 
+                name="image-url" 
+                placeholder="Dán link ảnh tại đây (VD: https://linkanh.com/matbang.jpg)"
+                required>
+
+            <label for="post-description">Mô tả chi tiết:</label>
+            <textarea id="post-description" rows="4" required placeholder="Mô tả ưu điểm, tiện ích, hợp đồng..."></textarea>
+            
+            <button type="submit" class="btn-submit-post">Xác nhận Đăng bài</button>
+        </form>
+    </div>
+</div>
+<div id="manageModal" class="modal">
+    <div class="modal-content" style="max-width: 800px;">
+        <span class="close-post-modal" id="closeManageModalBtn">&times;</span>
+        <h2>Quản lý Bài đăng Của Bạn 💼</h2>
+        <div id="manageListingsContainer" class="managed-listings">
+            </div>
+    </div>
+</div>
+<script src="chatbot.js"></script>
+<script src="manage.js"></script>
+<script type="module" src="script.js"></script>
+    </body>
+</html>
